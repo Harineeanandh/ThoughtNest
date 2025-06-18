@@ -1,17 +1,14 @@
 # ----------- Build Stage -----------
 FROM maven:3.9.6-eclipse-temurin-17 AS builder
 WORKDIR /app
-COPY . .
-
-COPY src/main/resources/thoughtnest-backend-47b1a528e04b.json src/main/resources/
+COPY pom.xml .
+COPY src ./src
 
 RUN mvn clean package -DskipTests
-
 
 # ----------- Run Stage -----------
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
-
 
 COPY --from=builder /app/target/*.jar app.jar
 
