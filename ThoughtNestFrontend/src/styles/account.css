@@ -1,0 +1,184 @@
+/* account.css */
+
+/* Main wrapper for the account page layout */
+.account-container {
+  max-width: 800px;
+  margin: 9rem auto 2rem;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fffafc;
+  display: flex;
+  gap: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Contact link at top-right */
+.top-right-link {
+  font-family: 'Caveat Brush', cursive;
+  font-size: 1.4rem;
+  color: #1f0b13;
+  text-decoration: none;
+  background-color: transparent;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+/* Section heading */
+.account-container h2 {
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #5b3b5c;
+}
+
+/* Left section for editable account information */
+.account-details {
+  flex: 1;
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 2px solid #f0d2e8;
+}
+
+/* Labels for input fields */
+.account-details label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+  color: #3d3d3d;
+}
+
+/* Wrapper for each input + button row */
+.account-field {
+  margin-bottom: 1.5rem;
+}
+
+/* Styling for inputs and spans in editable rows */
+.account-field input,
+.account-field span {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* Inline edit button next to inputs */
+.account-field button {
+  margin-top: 0.5rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  background-color: #f9d4ed;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #5b3b5c;
+  transition: background-color 0.2s;
+}
+
+.account-field button:hover {
+  background-color: #efb9db;
+}
+
+/* Submit button for saving updates */
+.update-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 0.6rem 2rem;
+  font-size: 1rem;
+  background-color: #a0c4ff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.update-btn:hover {
+  background-color: #85b6fc;
+}
+
+/* Logo styling on top-left */
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.8rem;
+  color: #3e2d4d;
+  text-decoration: none;
+  margin-left: 2rem;
+  margin-top: 2rem;
+  display: inline-block;
+}
+
+/* Right section showing blog stats and profile */
+.account-summary {
+  flex: 0.8;
+  background-color: #e7f0ff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  text-align: center;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+/* Styling for each stat line */
+.account-summary p {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Emphasized text inside stats */
+.account-summary strong {
+  font-size: 1.3rem;
+  color: #5b3b5c;
+}
+
+/* Circle container showing profile symbol */
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #ffe0ec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 3rem;
+  color: #5b3b5c;
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  html, body {
+    width: 100%;
+  }
+
+  .account-container {
+    flex-direction: column;
+    align-items: center;
+    overflow-x: auto;
+    overflow-y: auto;
+    max-width: 100%;
+    padding: 1rem;
+    margin: 7rem 1rem 2rem;
+  }
+
+  .account-summary,
+  .account-details {
+    width: 100%;
+    min-width: 320px;
+  }
+}

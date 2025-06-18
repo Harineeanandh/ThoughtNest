@@ -1,0 +1,265 @@
+/* Import final fonts */
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Handlee&family=Pacifico&family=Quicksand:wght@400;500;700&display=swap');
+
+/* Base body styling */
+body {
+  margin: 0;
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(to bottom, #d0d1df, #f9f1f9);
+  color: #090909;
+}
+
+/* Top fixed navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  z-index: 10;
+  background-color: transparent;
+}
+
+/* Logo inside navbar */
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #3e2d4d;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50vw;
+  flex-shrink: 0;
+}
+
+/* Top right "Contact Us" link */
+.top-right {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 11;
+}
+
+/* Navbar links */
+.navbar nav a {
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #0a050b;
+}
+
+.navbar nav a:hover {
+  color: #650769;
+}
+
+/* Signup main layout */
+.signup-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2rem;
+  padding: 8rem 4rem 4rem;
+  box-sizing: border-box;
+}
+
+/* Illustration on the left side */
+.signup-left {
+  flex: 0 0 45%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1rem;
+}
+
+.signup-left img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+}
+
+/* Form container on the right */
+.signup-right {
+  flex: 0 0 35%;
+  background: white;
+  padding: 2rem 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 15px rgba(200, 180, 200, 0.3);
+}
+
+/* Heading inside the form */
+.signup-right h2 {
+  font-family: 'Caveat Brush', cursive;
+  font-size: 2.2rem;
+  color: #3a0424;
+  margin-bottom: 1.5rem;
+}
+
+/* Form input fields */
+.signup-right input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background: #fdf8fc;
+  box-sizing: border-box;
+}
+
+/* Submit button */
+.signup-right button {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 1.2rem;
+  background-color: #6b0e99;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.signup-right button:hover {
+  background-color: #6f0b8a;
+}
+
+/* Horizontal divider */
+.divider {
+  text-align: center;
+  margin: 0.5rem;
+  color: #999;
+}
+
+/* Top-right corner link */
+.top-right-link {
+  font-family: 'Caveat Brush', cursive;
+  font-size: 1.4rem;
+  color: #1f0b13;
+  text-decoration: none;
+  background-color: transparent;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+
+/* Password input layout */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Password field styling */
+.password-input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Eye toggle icon for password field */
+.password-toggle {
+  position: absolute;
+  top: 55%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: auto;
+}
+
+/* ----------------------------- */
+/* Responsive adjustments below */
+/* ----------------------------- */
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 1.2rem 1.5rem;
+    align-items: flex-start;
+  }
+
+  .logo {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .signup-wrapper {
+    flex-direction: column;
+    align-items: center;
+    padding: 6rem 2rem 2rem;
+  }
+
+  .signup-left {
+    justify-content: center;
+    padding-right: 0;
+  }
+
+  .signup-left img {
+    max-width: 80%;
+    margin-bottom: 2rem;
+  }
+
+  .signup-right {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .signup-right h2 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  /* Optional Google sign-in styling */
+  .google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f2f2f2;
+    color: #555;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    font-weight: 500;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+
+  .google-btn:hover {
+    background: #e6e6e6;
+  }
+
+  .google-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .login-redirect {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #333;
+  }
+
+  .login-redirect a {
+    color: #6b0e99;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .login-redirect a:hover {
+    color: #a623c2;
+  }
+}

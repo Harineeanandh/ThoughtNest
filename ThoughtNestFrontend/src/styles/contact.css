@@ -1,0 +1,207 @@
+/* Import final fonts */
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Handlee&family=Pacifico&family=Quicksand:wght@400;500;700&display=swap');
+
+/* Reset and base background */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-shadow: none !important;
+  border: none !important;
+  overflow-x: hidden;
+  background: linear-gradient(to bottom, #d0d1df, #f9f1f9);
+}
+
+/* Header layout with logo and spacing */
+.header {
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  font-weight: 500;
+}
+
+/* Brand logo */
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #3e2d4d;
+  margin: 0 0 0.5rem 0.2rem;
+  text-decoration: none;
+}
+
+/* Wrapper for contact image and form side by side */
+.contact-section {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 10px 30px;
+}
+
+/* Left side image container */
+.contact-image {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-width: 500px;
+  height: 100%;
+}
+
+/* Image inside the contact image container */
+.contact-image img {
+  height: 80%;
+  max-height: 350px;
+  object-fit: contain;
+  display: block;
+  margin-left: -90px;  
+  margin-top: 110px; 
+}
+
+/* Form container styling */
+.contact-form {
+  margin-left: -150px;
+  font-family: 'Caveat Brush', cursive;
+  max-width: 500px;
+  width: 100%;
+  background-color: rgba(244, 247, 248, 0.9);
+  padding: 30px;
+  border-radius: 12px;
+  margin-top: 40px;
+}
+
+/* Heading inside the form */
+.contact-form h2 {
+  font-family: 'Caveat Brush', cursive;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+/* Form layout as column */
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input and textarea base styles */
+.contact-form input,
+.contact-form textarea {
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+/* Allow vertical resizing for textarea */
+.contact-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Legal note under the form */
+.captcha-note {
+  font-size: 11px;
+  margin-bottom: 15px;
+}
+
+.captcha-note a {
+  text-decoration: underline;
+}
+
+/* Submit button styling */
+.contact-form button {
+  padding: 10px;
+  background-color: #620a87;
+  color: white;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Button hover effect */
+.contact-form button:hover {
+  background-color: #670d82;
+}
+
+/* ----------------------- */
+/* --- Mobile Styles ---  */
+/* ----------------------- */
+
+/* Responsive layout for tablets and small screens */
+@media (max-width: 768px) {
+  .header {
+    padding: 15px 20px;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .contact-section {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15px;
+  }
+
+  .contact-image {
+    min-width: unset;
+    width: 80%;
+    max-height: 250px;
+    margin-bottom: 30px;
+  }
+
+  .contact-image img {
+    height: auto;
+    max-width: 100%;
+  }
+
+  .contact-form {
+    margin-left: 0;
+    max-width: 90%;
+    padding: 20px;
+  }
+
+  .contact-form h2 {
+    text-align: center;
+    font-size: 1.8rem;
+  }
+}
+
+/* Responsive layout for mobile phones */
+@media (max-width: 480px) {
+  .header {
+    padding: 10px 15px;
+  }
+
+  .logo {
+    font-size: 1.3rem;
+  }
+
+  .contact-image {
+    width: 95%;
+    max-height: 200px;
+  }
+
+  .contact-form {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .contact-form button {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .captcha-note {
+    font-size: 10px;
+  }
+}

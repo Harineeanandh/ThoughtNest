@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Handlee&family=Pacifico&family=Quicksand:wght@400;500;700&display=swap');
+
+/* Base styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Quicksand', sans-serif;
+  background: linear-gradient(to bottom, #d0d1df, #f9f1f9);
+  color: #190f16;
+  transform: scale(1);
+  transform-origin: top center;
+}
+
+/* Login layout wrapper */
+.login-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+  padding: 3rem 4rem 2rem 4rem;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Heading inside login-left */
+.login-wrapper h2 {
+  font-family: 'Caveat Brush', cursive;
+  font-size: 2.2rem;
+  color: #3a0424;
+  margin-bottom: 1.5rem;
+}
+
+/* Left section of the login page */
+.login-left {
+  flex: 1;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+/* Password input field layout */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Actual password input */
+.password-input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Eye toggle icon next to password */
+.password-toggle {
+  position: absolute;
+  top: 55%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: auto;
+}
+
+/* Logo branding */
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 2rem;
+  color: #2f182b;
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+}
+
+/* Duplicate h2 styling (specific to login-left) */
+.login-left h2 {
+  font-size: 2.5rem;
+  color: #2e142a;
+  margin-bottom: 2rem;
+}
+
+/* Form container layout */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Label styling */
+label {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* General input fields */
+input {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.6rem;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+/* Submit button */
+button {
+  padding: 0.9rem;
+  background-color: #9963bd;
+  color: white;
+  font-weight: bold;
+  font-size: 1.05rem;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+}
+
+/* Button hover color */
+button:hover {
+  background-color: #5a227d;
+}
+
+/* Footer below form with forgot link and signup */
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -0.5rem;
+  font-size: 0.9rem;
+  gap: 0.6rem;
+}
+
+/* Footer links (hover/active styles) */
+.form-footer span {
+  cursor: pointer;
+  color: #6a5acd;
+  transition: color 0.3s ease;
+}
+
+.form-footer span:hover {
+  color: #360ad8;
+}
+
+.form-footer .divider {
+  color: #aaa;
+  font-weight: bold;
+}
+
+.form-footer a {
+  color: #6a5acd;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  color: #360ad8;
+}
+
+/* Login box content alignment tweak */
+.login-content {
+  position: relative;
+  top: -21px;
+}
+
+/* Right section with illustration */
+.login-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-right img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Floating bird near bottom left */
+.bird-floating {
+  position: fixed;
+  bottom: 25px;
+  left: 190px;
+  width: 130px;
+  height: auto;
+  z-index: 10;
+  transition: transform 0.4s ease;
+  cursor: pointer;
+}
+
+/* Responsive: tablets and small screens */
+@media (max-width: 768px) {
+  .login-wrapper {
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .login-left {
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+  }
+
+  .login-left h2 {
+    font-size: 2rem;
+  }
+
+  form {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  input,
+  button {
+    width: 100%;
+    font-size: 0.95rem;
+  }
+
+  .form-footer {
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .login-right {
+    margin-top: 2rem;
+    width: 100%;
+    order: 2;
+    display: flex;
+    justify-content: center;
+  }
+
+  .login-right img {
+    max-width: 85%;
+  }
+
+  .bird-floating {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    margin-top: 1.5rem;
+    width: 120px;
+  }
+}
+
+/* Responsive: very small screens */
+@media (max-width: 480px) {
+  .login-wrapper {
+    padding: 4.5rem;
+  }
+
+  .login-left h2 {
+    font-size: 1.8rem;
+  }
+
+  input,
+  button {
+    font-size: 0.9rem;
+    padding: 0.7rem 0.9rem;
+  }
+
+  .form-footer {
+    font-size: 0.75rem;
+  }
+
+  .logo {
+    font-family: 'Pacifico', cursive;
+    font-size: 2rem;
+    color: #1e041a;
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+  }
+
+  .bird-floating {
+    width: 100px;
+    margin-top: 1rem;
+  }
+}

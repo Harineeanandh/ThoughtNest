@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./ThoughtNestBackend
+    volumes:
+      - ./ThoughtNestBackend:/app
+      - ~/.m2:/root/.m2  
+    working_dir: /app
+    command: ./mvnw spring-boot:run
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/thoughtnest_db
+      - SPRING_DATASOURCE_USERNAME=harinee1
+      - SPRING_DATASOURCE_PASSWORD=Kowshik12$
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./ThoughtNestFrontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./ThoughtNestFrontend:/app
+      - /app/node_modules  # Prevents local node_modules from conflicting
+    working_dir: /app
+    command: npm run dev -- --host
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_DB: thoughtnest_db
+      POSTGRES_USER: harinee1
+      POSTGRES_PASSWORD: Kowshik12$
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+volumes:
+  pgdata:
+
+networks:
+  app-network:

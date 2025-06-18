@@ -1,0 +1,405 @@
+/* Importing all final fonts used across the homepage */
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Handlee&family=Pacifico&family=Quicksand:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Fredoka&family=Gloria+Hallelujah&family=Satisfy&family=Shadows+Into+Light&display=swap');
+
+/* Base styles for body */
+body {
+  margin: 0;
+  font-family: 'Quicksand', sans-serif;
+  color: #090909;
+  background: linear-gradient(to bottom, #d0d1df, #f9f1f9);
+}
+
+/* Navigation bar styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  position: sticky;
+  top: 0;
+  background: transparent;
+  z-index: 10;
+}
+
+/* Logo brand styling */
+.logo {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #3e2d4d;
+  text-decoration: none;
+  position: absolute;
+  top: -0.1rem;
+  left: 0.5rem;
+  margin: 0;
+  z-index: 100;
+}
+
+/* Navigation links layout */
+.navbar nav {
+  display: flex;
+  gap: 2rem;
+}
+
+/* Individual nav link styling */
+.navbar nav a {
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #0a050b;
+  position: relative;
+  padding: 0.6rem 0;
+}
+
+/* Underline effect on hover */
+.navbar nav a::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #ef95ce;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  transform-origin: left;
+}
+
+.navbar nav a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Homepage welcome section */
+.intro {
+  font-family: 'Gloria Hallelujah', cursive;
+  font-size: 1.25rem;
+  color: #5a2c3f;
+  max-width: 700px;
+  margin: 7.5rem auto 1rem auto;
+  text-align: center;
+  line-height: 2.2rem;
+}
+
+/* Main heading inside intro */
+.intro h1 {
+  font-family: 'Caveat Brush', cursive;
+  font-size: 3.5rem;
+  font-weight: normal;
+  line-height: 3.8rem;
+  color: #3a0424;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+/* Wrapper for horizontal blog card scroll */
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  overflow-x: auto;
+  gap: 2rem;
+  padding: 2rem;
+  scroll-behavior: smooth;
+  align-items: stretch;
+  margin-bottom: 3rem;
+}
+
+/* Clickable blog card container */
+.blog-link {
+  flex-shrink: 0;
+  text-decoration: none;
+  color: inherit;
+  width: 240px;
+}
+
+/* Section title header */
+.section-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Blog container padding */
+.blog-container {
+  padding: 2rem 4rem;
+}
+
+/* Flex wrapper for cards */
+.card-list {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+/* Blog card layout */
+.blog-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 100%;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(200, 180, 200, 0.2);
+  box-sizing: border-box;
+  transition: transform 0.2s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Blog image inside card */
+.blog-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 0.75rem;
+  margin-bottom: 0.5rem;
+  background-color: #f8f8f8;
+}
+
+/* Category tag on cards */
+.tag {
+  background: #f8e2ec;
+  color: #6a3d5a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+/* Alternate tag style */
+.travel {
+  background: #f9d8d3;
+}
+
+/* Blog title in card */
+.title {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+/* Date under blog title */
+.date {
+  font-size: 0.85rem;
+  color: #777;
+}
+
+/* Carousel navigation arrows */
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.5rem;
+  color: #cf74f3;
+  cursor: pointer;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 5;
+}
+
+.arrow.left {
+  left: 1rem;
+}
+
+.arrow.right {
+  right: 1rem;
+}
+
+/* Preserve visited link color */
+.blog-link:visited {
+  color: inherit;
+}
+
+/* Top-right hamburger container */
+.menu-container {
+  position: absolute;
+  top: 1.5rem;
+  right: 2.5rem;
+  z-index: 100;
+}
+
+/* Hamburger icon button */
+.hamburger {
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #5b2b3b;
+  background: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  transition: background 0.3s ease;
+}
+
+.hamburger:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Dropdown menu layout */
+.dropdown {
+  margin-top: 0.8rem;
+  display: grid;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.213);
+  box-shadow: 0 4px 16px rgba(180, 140, 160, 0);
+  border-radius: 1rem;
+  position: absolute;
+  right: 0;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  min-width: 200px;
+}
+
+/* Dropdown link + button style */
+.dropdown a,
+.dropdown button {
+  font-family: 'Caveat Brush', cursive;
+  font-size: 1.2rem;
+  display: block;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  color: #6a3d5a;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Divider lines between dropdown items */
+.dropdown a:not(:last-child)::after,
+.dropdown button:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 1px;
+  background-color: #d1bbdf;
+}
+
+/* Hover highlight effect for dropdown items */
+.dropdown a:hover,
+.dropdown button:hover {
+  background-color: #dfcaef;
+  border-radius: 0.5rem;
+  color: #3b1e2e;
+}
+
+/* Hide class for dropdown toggle */
+.hidden {
+  display: none;
+}
+
+/* Hide scrollbars on horizontal scroll elements */
+.carousel-wrapper::-webkit-scrollbar,
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-wrapper,
+.carousel {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* -------- Responsive Styles -------- */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 1rem 1.5rem;
+    align-items: flex-start;
+  }
+
+  .logo {
+    font-size: 1rem;
+    margin-bottom: 15rem;
+  }
+
+  .intro-section {
+    margin-top: 13rem;
+  }
+
+  .intro {
+    font-size: 1rem;
+    line-height: 1.8rem;
+    padding: 1 1rem;
+  }
+
+  .intro h1 {
+    font-size: 2.2rem;
+    line-height: 2.4rem;
+  }
+
+  .blog-container {
+    padding: 1rem;
+  }
+
+  .carousel-wrapper {
+    flex-direction: column;
+    padding: 1rem 0.5rem;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .blog-link {
+    width: 80vw;
+  }
+
+  .blog-card {
+    height: auto;
+    padding: 1rem;
+  }
+
+  .blog-card img {
+    height: 140px;
+  }
+
+  .arrow {
+    top: unset;
+    bottom: -2.5rem;
+    transform: none;
+    width: 2.2rem;
+    height: 2.2rem;
+    font-size: 1.4rem;
+    position: static;
+    align-self: center;
+  }
+
+  .carousel-wrapper > .arrow.left,
+  .carousel-wrapper > .arrow.right {
+    display: inline-flex;
+    margin: 0 0.5rem;
+  }
+
+  .menu-container {
+    top: 1rem;
+    right: 1.5rem;
+  }
+
+  .hamburger {
+    font-size: 1.5rem;
+  }
+
+  .dropdown {
+    font-size: 0.7rem;
+    min-width: 150px;
+  }
+
+  .dropdown a,
+  .dropdown button {
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+  }
+}
