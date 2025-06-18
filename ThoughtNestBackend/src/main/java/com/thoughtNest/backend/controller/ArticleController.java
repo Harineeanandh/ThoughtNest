@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -43,9 +42,6 @@ public class ArticleController {
 
     @Autowired
     private GCSUploadService gcsUploadService;
-
-    @Value("${app.upload.dir}")
-    private String uploadDir;
 
     @PostMapping
     public ResponseEntity<?> createArticle(@RequestBody Article article, Authentication authentication) {

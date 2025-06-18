@@ -22,14 +22,14 @@ public class GCSUploadService {
     public String uploadFile(String originalFilename, InputStream inputStream, String contentType) throws IOException {
         String fileName = UUID.randomUUID() + "-" + originalFilename;
 
-        // Use default credentials provided by Google Cloud Run
+        // Use default credentials (from env or GCP runtime)
         Storage storage = StorageOptions.getDefaultInstance().getService();
 
         BlobId blobId = BlobId.of(bucketName, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-                .setContentType(contentType)
-                .setAcl(java.util.List.of(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER))) // Make public
-                .build();
+            .setContentType(contentType)
+            .setAcl(java.util.List.of(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER))) // Make file public
+            .build();
 
         storage.create(blobInfo, inputStream);
 

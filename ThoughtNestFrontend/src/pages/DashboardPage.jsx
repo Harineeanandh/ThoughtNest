@@ -15,7 +15,7 @@ const safeToast = (message, type = "info") => {
     } else {
       console.warn("ToastContainer not mounted yet. Skipping toast:", message);
     }
-  }, 100);
+  }, 20);
 };
 
 
