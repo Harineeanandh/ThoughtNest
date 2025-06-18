@@ -1,0 +1,39 @@
+# ==========================
+# = Node.js (Frontend)     =
+# ==========================
+node_modules/
+dist/
+
+# ==========================
+# = Java / Spring Boot     =
+# ==========================
+**/target/
+**/build/
+
+# ==========================
+# = IDE / Editor Files     =
+# ==========================
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+
+# ==========================
+# = Sensitive Config Files =
+# ==========================
+ThoughtNestBackend/src/main/resources/application.properties
+ThoughtNestBackend/src/main/resources/thoughtnest-backend-*.json
+
+# ==========================
+# = Allow test config for CI =
+# ==========================
+!ThoughtNestBackend/src/test/resources/application-test.properties
+
+# ==========================
+# = Frontend Env Files     =
+# ==========================
+ThoughtNestFrontend/.env
+ThoughtNestFrontend/.env.local
+git-filter-repo/
