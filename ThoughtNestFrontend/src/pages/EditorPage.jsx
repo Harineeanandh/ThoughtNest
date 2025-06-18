@@ -130,24 +130,27 @@ export default function EditorPage() {
     setSubmitting(true);
     let imageUrl = imagePreviewUrl;
 
-    // Upload image if provided
-    if (imageFile) {
-      const formData = new FormData();
-      formData.append("image", imageFile);
+// Upload image if provided
+if (imageFile) {
+  const formData = new FormData();
+  formData.append("image", imageFile);
 
-      try {
-        const uploadRes = await apiInstance.post("/articles/upload-image", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+  try {
+    const uploadRes = await apiInstance.post("/articles/upload-image", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
-        imageUrl = uploadRes.data.data;
-      } catch (error) {
-        console.error("Error uploading image", error);
-        safeToast("Image upload failed. Please try again.", "error");
-        setSubmitting(false);
-        return;
-      }
-    }
+    imageUrl = uploadRes.data.data;
+  } catch (error) {
+    console.error("Error uploading image", error);
+    safeToast("Image upload failed. Please try again.", "error");
+    setSubmitting(false);
+    return;
+  }
+} else if (imageUrl && !imageUrl.startsWith("http")) {
+  console.warn("Image is not a valid GCS URL. Clearing it.");
+  imageUrl = null;
+}
 
     // Construct final article payload
     const articleData = {
@@ -235,6 +238,7 @@ export default function EditorPage() {
         className="top-image"
         alt="Preview"
         onError={(e) => {
+           console.error("Broken image URL:", e.target.src);
           e.target.src = "/assets/placeholder.png";
         }}
       />

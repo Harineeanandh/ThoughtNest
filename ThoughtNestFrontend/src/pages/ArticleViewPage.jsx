@@ -75,9 +75,7 @@ export default function ArticleViewPage() {
   if (!article) return <div>Loading article...</div>;
 
   // Construct full image URL for logging
-  const imageUrl = article.image?.startsWith("http")
-    ? article.image
-    : `${API_BASE_URL}${article.image}`;
+  const imageUrl = article.image;
 
   console.log("🖼️ Final image URL to load:", imageUrl);
 
