@@ -3,12 +3,22 @@
 # ==========================
 node_modules/
 dist/
+ThoughtNestFrontend/.env
+ThoughtNestFrontend/.env.local
 
 # ==========================
 # = Java / Spring Boot     =
 # ==========================
 **/target/
 **/build/
+*.jar
+*.log
+*.class
+
+# Maven Wrapper
+**/.mvn/
+**/mvnw
+**/mvnw.cmd
 
 # ==========================
 # = IDE / Editor Files     =
@@ -25,15 +35,13 @@ dist/
 # ==========================
 ThoughtNestBackend/src/main/resources/application.properties
 ThoughtNestBackend/src/main/resources/thoughtnest-backend-*.json
+**/*.env
+**/*.json
 
-# ==========================
-# = Allow test config for CI =
-# ==========================
+# Allow test config for CI
 !ThoughtNestBackend/src/test/resources/application-test.properties
 
 # ==========================
-# = Frontend Env Files     =
+# = Temporary and Git Tools =
 # ==========================
-ThoughtNestFrontend/.env
-ThoughtNestFrontend/.env.local
 git-filter-repo/
