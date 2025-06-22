@@ -120,7 +120,14 @@ public class ArticleController {
         article.setLastModifiedDate(LocalDateTime.now());
 
         Article savedArticle = articleService.saveArticle(article);
-        ArticleDTO dto = new ArticleDTO(savedArticle);
+
+        // ✅ Refetch with author to prevent LazyInitializationException
+        Optional<Article> refreshedOpt = articleService.getArticleById(savedArticle.getId());
+        if (refreshedOpt.isEmpty()) {
+            return ResponseHandler.generateResponse("Updated article not found", HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
+
+        ArticleDTO dto = new ArticleDTO(refreshedOpt.get());
         return ResponseHandler.generateResponse("Article updated", HttpStatus.OK, dto);
     }
 
