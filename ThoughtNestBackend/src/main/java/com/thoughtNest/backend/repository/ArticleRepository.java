@@ -20,7 +20,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
      * @param author the {@link User} whose articles are to be fetched
      * @return list of articles written by the given user
      */
-    @Query("SELECT a FROM Article a JOIN FETCH a.author WHERE a.author = :user")
+    @Query("SELECT a FROM Article a JOIN FETCH a.author WHERE a.author = :author")
     List<Article> findByAuthor(User author);
 
     /**
