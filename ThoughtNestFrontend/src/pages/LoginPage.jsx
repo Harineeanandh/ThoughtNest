@@ -1,3 +1,4 @@
+// Author: Harinee Anandh
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../styles/login.css";
@@ -221,14 +222,11 @@ export default function Login() {
 
       {/* Right section with illustration */}
       <div className="login-right">
-        <img src="/assets/girl-working.png" alt="Login illustration" />
+        <img src="/assets/girl-working.png" alt="Login illustration" loading="lazy"/>
       </div>
 
       {/* Decorative floating bird */}
-      <img src="/assets/bird.png" alt="Bird" className="bird-floating" />
-
-      {/* Toast messages container */}
-      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar theme="colored" />
+      <img src="/assets/bird.png" alt="Bird" className="bird-floating" loading="lazy"/>
     </div>
   );
 }

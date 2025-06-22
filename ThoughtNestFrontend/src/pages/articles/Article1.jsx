@@ -1,13 +1,20 @@
+// Author: Harinee Anandh
 import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import "../../styles/article.css";
 
 
 export default function Article1() {
+  useEffect(() => {
+  document.body.classList.add("portrait-only");
+  return () => document.body.classList.remove("portrait-only");
+}, []);
+
   return (
     <div className="article-container">
     <Link to="/" className="logo">ThoughtNest</Link>
 
-      <img src="/assets/girl.jpg" className="top-image" alt="" />
+      <img src="/assets/girl.jpg" className="top-image" alt=""loading="lazy" />
 
       <h1 className="article-title">Guilty eating meat?</h1>
       <p className="date">April 8, 2024</p>
@@ -20,7 +27,7 @@ export default function Article1() {
 
       <p><em>How is the goat whose flesh I just consumed any different from the dog and cat whose life I treasure?</em></p>
       
-      <img src="/assets/dog and cat.png" className="image-dog-cat" alt="" />
+      <img src="/assets/dog and cat.png" className="image-dog-cat" alt="" loading="lazy"/>
       
       <p>No answer ever satisfies me. Not “survival instinct.” Not “the food chain.” Not “it’s cultural.” Each reason feels like a brittle mask cracking under the weight of truth. I see the eyes of a creature once alive. I imagine its fear, its longing for comfort, its silent scream when it was taken from the world.</p>
 
@@ -31,7 +38,7 @@ export default function Article1() {
       <p>So I searched for peace. And peace came to me in the form of a story.</p>
 
       <h2>The Story: The Bridge Between Me and Them</h2>
-      <img src="/assets/mountain village.jpg" alt="Story illustration" className="image-mountain" />
+      <img src="/assets/mountain village.jpg" alt="Story illustration" className="image-mountain" loading="lazy"/>
 
       <p>A young woman once lived in a mountain village where the winters were harsh and the people hardened by need. Her family raised animals for food — it was how they survived. But she was unlike the others. She spoke to the animals. She gave them names. When she fed them, she did it with tenderness.</p>
 
@@ -39,7 +46,7 @@ export default function Article1() {
 
       <p>She didn’t sleep. She crept into the snow, found the goat’s shed, and knelt in the silence.</p>
       
-      <img src="/assets/animal shed.png" alt="Kneeling in the snow" className="image-animal-shed" />
+      <img src="/assets/animal shed.png" alt="Kneeling in the snow" className="image-animal-shed" loading="lazy"/>
       
       <p>“I’m sorry,” she whispered. “I didn’t fight harder for you.”</p>
 

@@ -1,3 +1,4 @@
+// Author: Harinee Anandh
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/contact.css";
@@ -32,7 +33,7 @@ export default function ContactPage() {
     setIsLoading(true); // Disable button and show loading state
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/contact`, {
+      const response = await axios.post(`${API_BASE_URL}/contact`, {
         name,
         email,
         message,
@@ -68,7 +69,7 @@ export default function ContactPage() {
       <main className="contact-section">
         {/* Left side: Illustration */}
         <div className="contact-image">
-          <img src="/assets/teamup.png" alt="Team collaboration illustration" />
+          <img src="/assets/teamup.png" alt="Team collaboration illustration" loading="lazy"/>
         </div>
 
         {/* Right side: Contact form */}

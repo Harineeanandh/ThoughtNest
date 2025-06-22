@@ -1,12 +1,19 @@
+// Author: Harinee Anandh
 import { Link } from 'react-router-dom';
 import "../../styles/article.css";
+import React, { useEffect } from 'react';
 
 export default function Article4() {
+  useEffect(() => {
+  document.body.classList.add("portrait-only");
+  return () => document.body.classList.remove("portrait-only");
+}, []);
+
   return (
     <div className="article-container">
      <Link to="/" className="logo">ThoughtNest</Link>
 
-      <img src="/assets/nightmare.png" className="top-image" alt="Nightmare" />
+      <img src="/assets/nightmare.png" className="top-image" alt="Nightmare" loading="lazy"/>
 
       <h1 className="article-title">The Secret Language of Nightmares: What They Teach Us, What They Warn Us</h1>
       <p className="date">April 8, 2024</p>

@@ -170,38 +170,3 @@ html, body {
   }
 }
 
-/* Responsive layout for mobile phones */
-@media (max-width: 480px) {
-  .header {
-    padding: 10px 15px;
-  }
-
-  .logo {
-    font-size: 1.3rem;
-  }
-
-  .contact-image {
-    width: 95%;
-    max-height: 200px;
-  }
-
-  .contact-form {
-    width: 95%;
-    padding: 15px;
-  }
-
-  .contact-form input,
-  .contact-form textarea {
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-
-  .contact-form button {
-    padding: 8px;
-    font-size: 0.9rem;
-  }
-
-  .captcha-note {
-    font-size: 10px;
-  }
-}

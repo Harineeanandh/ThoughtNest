@@ -1,11 +1,18 @@
+// Author: Harinee Anandh
 import { Link } from 'react-router-dom';
 import "../../styles/article.css";
+import React, { useEffect } from 'react';
 
 export default function Article6() {
+  useEffect(() => {
+  document.body.classList.add("portrait-only");
+  return () => document.body.classList.remove("portrait-only");
+}, []);
+
   return (
     <div className="article-container">
      <Link to="/" className="logo">ThoughtNest</Link>
-      <img src="/assets/confused.png" className="top-image" />
+      <img src="/assets/confused.png" className="top-image" loading="lazy"/>
 
       <h1 className="article-title">Benefit of Doubt: Why Being Kind Feels Unnatural Sometimes</h1>
 

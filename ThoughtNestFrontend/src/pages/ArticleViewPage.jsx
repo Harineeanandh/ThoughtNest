@@ -32,39 +32,63 @@ export default function ArticleViewPage() {
   const [article, setArticle] = useState(null); // State to hold article data
   const authToken = localStorage.getItem("token");
 
-  console.log("🟢 ArticleViewPage loaded");
-  console.log("🔑 Article ID from route param:", id);
-  console.log("🔐 Auth token present:", !!authToken);
+  console.log("ArticleViewPage loaded");
+  console.log("Article ID from route param:", id);
+  console.log("Auth token present:", !!authToken);
+
+  useEffect(() => {
+    document.body.classList.add("portrait-only");
+    return () => document.body.classList.remove("portrait-only");
+  }, []);
 
   // Fetch the article on mount
   useEffect(() => {
     async function fetchArticle() {
-      console.log("📡 Fetching article ID:", id);
+      const requestUrl = `${API_BASE_URL}/articles/${id}`;
+      console.log("Fetching article ID:", id);
+      console.log("Full API URL:", requestUrl);
 
       try {
-        const res = await fetch(`${API_BASE_URL}/articles/${id}`, {
+        const res = await fetch(requestUrl, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
         });
 
-        console.log("🌐 Fetch status code:", res.status);
+        console.log("Raw fetch response object:", res);
+        console.log("Fetch status code:", res.status);
+
+        const contentType = res.headers.get("content-type");
+        console.log("Response content-type:", contentType);
 
         if (res.ok) {
           const json = await res.json();
-          console.log("📥 Article fetch response:", json);
+          console.log("Parsed JSON response:", json);
 
           if (!json.data) {
+            console.warn("JSON received but data field is missing.");
             safeToast("No article found in view response.", "warning");
             return;
           }
 
           setArticle(json.data);
         } else {
-          safeToast("Failed to load article", "error");
+          let errorText = "";
+
+          try {
+            const errorJson = await res.json();
+            console.error("Server returned error JSON:", errorJson);
+            errorText = errorJson.message || JSON.stringify(errorJson);
+          } catch (parseErr) {
+            const fallbackText = await res.text();
+            console.error("Failed to parse JSON. Raw response text:", fallbackText);
+            errorText = fallbackText;
+          }
+
+          safeToast(`Failed to load article: ${res.status} - ${errorText}`, "error");
         }
       } catch (err) {
-        console.error("❌ Error fetching article:", err);
+        console.error("Network or fetch error:", err);
         safeToast("Error fetching article", "error");
       }
     }
@@ -77,7 +101,7 @@ export default function ArticleViewPage() {
   // Construct full image URL for logging
   const imageUrl = article.image;
 
-  console.log("🖼️ Final image URL to load:", imageUrl);
+  console.log("Final image URL to load:", imageUrl);
 
   return (
     <div className="article-container">
@@ -89,7 +113,7 @@ export default function ArticleViewPage() {
         alt="Article"
         className="body-image"
         onError={(e) => {
-          console.error("🚫 Image failed to load:", imageUrl);
+          console.error("Image failed to load:", imageUrl);
           e.target.src = "/assets/placeholder.png";
           safeToast("Image could not be loaded. Showing placeholder.", "warning");
         }}

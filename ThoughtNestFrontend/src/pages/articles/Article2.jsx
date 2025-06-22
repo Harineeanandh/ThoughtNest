@@ -1,13 +1,20 @@
+// Author: Harinee Anandh
 import { Link } from 'react-router-dom';
 import "../../styles/article.css";
+import React, { useEffect } from 'react';
 
 
 export default function Article2() {
+  useEffect(() => {
+  document.body.classList.add("portrait-only");
+  return () => document.body.classList.remove("portrait-only");
+}, []);
+
   return (
     <div className="article-container">
      <Link to="/" className="logo">ThoughtNest</Link>
 
-      <img src="/assets/lion and pup.jpg" className="top-image" alt="" />
+      <img src="/assets/lion and pup.jpg" className="top-image" alt="" loading="lazy"/>
 
       <h1 className="article-title">Is Ego a Human Thing or Do Animals Have It Too?</h1>
       <p className="date">April 12, 2024</p>

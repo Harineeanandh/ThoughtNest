@@ -1,3 +1,4 @@
+// Author: Harinee Anandh
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/index.css"; // Global stylesheet for layout and styling
@@ -15,11 +16,14 @@ export default function HomePage() {
   // Ref pointing to the article carousel container, used for horizontal scrolling
   const carouselRef = useRef(null);
 
+
+
   // On component mount, check if a user is logged in by reading from localStorage
   useEffect(() => {
     setLoggedIn(localStorage.getItem("loggedIn") === "true");
   }, []);
 
+  
   // Toggle visibility of the dropdown menu
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
@@ -67,7 +71,7 @@ export default function HomePage() {
       });
     }
   };
-
+ 
   return (
     <>
       {/* Top navigation header */}
@@ -77,8 +81,11 @@ export default function HomePage() {
 
       {/* Main welcome message section */}
       <main className="blog-container">
-        <section className="intro-section">
-          <div className="intro">
+      <div className="intro-zoom-wrapper">
+        <section
+  className="intro-section"
+>
+        <div className="intro">
             <h1>Hi there! Welcome to ThoughtNest!</h1>
             <p>
               A cozy space for thoughts, stories, and sparks of inspiration.
@@ -92,6 +99,7 @@ export default function HomePage() {
             </p>
           </div>
         </section>
+      </div>
       </main>
 
       {/* Horizontally scrollable article carousel */}

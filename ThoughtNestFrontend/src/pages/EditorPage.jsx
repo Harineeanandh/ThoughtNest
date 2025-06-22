@@ -1,4 +1,4 @@
-// EditorPage.jsx — Fully Commented
+// EditorPage.jsx 
 // Author: Harinee Anandh
 
 import React, { useState, useEffect } from "react";
@@ -7,47 +7,31 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../styles/article.css";
 import apiInstance from "../scripts/apiInstance"; // Axios instance with baseURL & auth
-import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const safeToast = (message, type = "info") => {
-  console.log(`Attempting to show toast: "${message}" of type: "${type}"`);
-  setTimeout(() => {
-    const container = document.querySelector(".Toastify__toast-container");
-    if (container) {
-      console.log("ToastContainer is mounted. Showing toast.");
-      toast[type](message);
-    } else {
-      console.warn("ToastContainer not mounted yet. Skipping toast:", message);
-    }
-  }, 250);
+  console.log(`Showing toast: "${message}" of type: "${type}"`);
+  toast[type](message);
 };
 
-
-// Main editor page component for creating or editing articles
 export default function EditorPage() {
-  const location = useLocation(); // React Router hook to access current location object
-  console.log("EditorPage loaded, location:", location);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get("mode") || "create";
+  const articleId = searchParams.get("id");
 
-  const navigate = useNavigate(); // React Router hook for programmatic navigation
-  const [searchParams] = useSearchParams(); // Extract search parameters from URL
-  const mode = searchParams.get("mode") || "create"; // Determine whether to create or edit
-  const articleId = searchParams.get("id"); // Article ID for edit mode
-
-  // State for form fields
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [content, setContent] = useState("");
-  const [imageFile, setImageFile] = useState(null); // Image file object
+  const [imageFile, setImageFile] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState("/assets/placeholder.png");
+  const [loading, setLoading] = useState(mode === "edit");
+  const [submitting, setSubmitting] = useState(false);
 
-  const [loading, setLoading] = useState(mode === "edit"); // Show loader if editing
-  const [submitting, setSubmitting] = useState(false); // Disable button during submission
+  const authToken = localStorage.getItem("token");
 
-  const authToken = localStorage.getItem("token"); // Retrieve token from localStorage
-
-  // Decode JWT token to extract username or subject
   function getUsernameFromToken(token) {
     if (!token) return null;
     try {
@@ -61,66 +45,54 @@ export default function EditorPage() {
 
   const loggedInUser = getUsernameFromToken(authToken);
 
-  // Format a date string (from DB) into YYYY-MM-DD format for input[type="date"]
   function formatDateForInput(dateString) {
     if (!dateString) return "";
     const d = new Date(dateString);
     if (isNaN(d)) return "";
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const day = String(d.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   }
 
-  // Fetch article data if in edit mode
   useEffect(() => {
-  if (mode === "edit" && articleId) {
-    async function fetchArticle() {
-      try {
-        console.log("Fetching article with ID:", articleId);
-        const res = await apiInstance.get(`/articles/${articleId}`);
+    document.body.classList.add("portrait-only");
+    return () => document.body.classList.remove("portrait-only");
+  }, []);
 
-        console.log("Raw API response:", res.data);
-        const article = res.data.data;
+  useEffect(() => {
+    if (mode === "edit" && articleId) {
+      async function fetchArticle() {
+        try {
+          const res = await apiInstance.get(`/articles/${articleId}`);
+          const article = res.data.data;
 
-        console.log("Fetched article:", article);
-        console.log("Fetched image path:", article.image);
+          setTitle(article.title || "");
+          setContent(article.content || "");
+          setDate(formatDateForInput(article.date));
 
-        setTitle(article.title || "");
-        setContent(article.content || "");
-        setDate(formatDateForInput(article.date));
-
-        // Set image preview
-        if (article.image) {
-          setImagePreviewUrl(article.image);
-          console.log("imagePreviewUrl set to:", article.image);
-        } else {
-          setImagePreviewUrl("/assets/placeholder.png");
-          console.warn("No image found in article. Using placeholder.");
+          if (article.image) {
+            setImagePreviewUrl(article.image);
+          } else {
+            setImagePreviewUrl("/assets/placeholder.png");
+          }
+        } catch (err) {
+          console.error("Error loading article", err);
+          safeToast("Failed to load article.", "error");
+        } finally {
+          setLoading(false);
         }
-      } catch (err) {
-        console.error("Error loading article", err);
-        safeToast("Failed to load article.", "error");
-      } finally {
-        setLoading(false);
       }
+
+      fetchArticle();
+    } else {
+      setLoading(false);
     }
+  }, [mode, articleId, loggedInUser]);
 
-    fetchArticle();
-  } else {
-    setLoading(false);
-  }
-}, [mode, articleId, loggedInUser]);
-
-
-  // Handle image file selection and preview rendering
   function onImageChange(e) {
     const file = e.target.files[0];
     setImageFile(file);
     setImagePreviewUrl(file ? URL.createObjectURL(file) : "/assets/placeholder.png");
   }
 
-  // Handle form submission to create or update an article
   async function submitArticle() {
     if (!title || !date || !content) {
       safeToast("Please fill in all fields before saving.", "error");
@@ -130,29 +102,24 @@ export default function EditorPage() {
     setSubmitting(true);
     let imageUrl = imagePreviewUrl;
 
-// Upload image if provided
-if (imageFile) {
-  const formData = new FormData();
-  formData.append("image", imageFile);
+    if (imageFile) {
+      const formData = new FormData();
+      formData.append("image", imageFile);
+      try {
+        const uploadRes = await apiInstance.post("/articles/upload-image", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        imageUrl = uploadRes.data.data;
+      } catch (error) {
+        console.error("Error uploading image", error);
+        safeToast("Image upload failed. Please try again with a file size less than 200kb", "error");
+        setSubmitting(false);
+        return;
+      }
+    } else if (imageUrl && !imageUrl.startsWith("http")) {
+      imageUrl = null;
+    }
 
-  try {
-    const uploadRes = await apiInstance.post("/articles/upload-image", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-
-    imageUrl = uploadRes.data.data;
-  } catch (error) {
-    console.error("Error uploading image", error);
-    safeToast("Image upload failed. Please try again.", "error");
-    setSubmitting(false);
-    return;
-  }
-} else if (imageUrl && !imageUrl.startsWith("http")) {
-  console.warn("Image is not a valid GCS URL. Clearing it.");
-  imageUrl = null;
-}
-
-    // Construct final article payload
     const articleData = {
       title,
       date: new Date(date).toISOString(),
@@ -163,17 +130,12 @@ if (imageFile) {
 
     try {
       let response;
-
-      // POST new article
       if (mode === "create") {
         response = await apiInstance.post("/articles", articleData);
-      }
-      // PUT existing article update
-      else if (mode === "edit" && articleId) {
+      } else if (mode === "edit" && articleId) {
         response = await apiInstance.put(`/articles/${articleId}`, articleData);
       }
 
-      // Handle response
       if (response?.status >= 200 && response?.status < 300) {
         safeToast(`Article ${mode === "create" ? "created" : "updated"} successfully!`, "success");
         navigate("/dashboard");
@@ -189,7 +151,6 @@ if (imageFile) {
     }
   }
 
-  // Show loading state when data is being fetched
   if (loading) {
     return (
       <div className="article-container">
@@ -198,7 +159,6 @@ if (imageFile) {
     );
   }
 
-  // Quill toolbar configuration
   const quillModules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -209,77 +169,58 @@ if (imageFile) {
     ],
   };
 
-  // Supported Quill content formats
   const quillFormats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "list",
-    "bullet",
-    "blockquote",
-    "link",
+    "header", "bold", "italic", "underline", "strike",
+    "list", "bullet", "blockquote", "link",
   ];
 
-  // Final rendered layout of the editor page
   return (
-    <div className="article-container">
-      <Link to="/" className="logo">
-        ThoughtNest
-      </Link>
+    <div className="editor-wrapper">
+      <div className="article-container">
+        <Link to="/" className="logo">ThoughtNest</Link>
 
-      {/* Image upload input */}
-      <input type="file" accept="image/*" onChange={onImageChange} />
+        <input type="file" accept="image/*" onChange={onImageChange} />
+        <img
+          src={imagePreviewUrl}
+          className="top-image"
+          alt="Preview"
+          onError={(e) => {
+            console.error("Broken image URL:", e.target.src);
+            e.target.src = "/assets/placeholder.png";
+          }}
+        />
 
-      {/* Preview of selected image */}
-      <img
-        src={imagePreviewUrl}
-        className="top-image"
-        alt="Preview"
-        onError={(e) => {
-           console.error("Broken image URL:", e.target.src);
-          e.target.src = "/assets/placeholder.png";
-        }}
-      />
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="article-title"
+        />
 
-      {/* Title input field */}
-      <input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="article-title"
-      />
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="date"
+        />
 
-      {/* Date input field */}
-      <input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-        className="date"
-      />
+        <ReactQuill
+          value={content}
+          onChange={setContent}
+          modules={quillModules}
+          formats={quillFormats}
+          placeholder="Write your article here..."
+          className="article-editor"
+          theme="snow"
+        />
 
-      {/* Quill rich text editor */}
-      <ReactQuill
-        value={content}
-        onChange={setContent}
-        modules={quillModules}
-        formats={quillFormats}
-        placeholder="Write your article here..."
-        className="article-editor"
-        theme="snow"
-      />
-
-      {/* Submit button */}
-      <button onClick={submitArticle} disabled={submitting}>
-        {submitting
-          ? "Saving..."
-          : `Save & ${mode === "create" ? "Create" : "Update"} Article`}
-      </button>
-
-      {/* Toast notification container */}
-      <ToastContainer position="top-right" autoClose={3000} />
+        <button onClick={submitArticle} disabled={submitting}>
+          {submitting
+            ? "Saving..."
+            : `Save & ${mode === "create" ? "Create" : "Update"} Article`}
+        </button>
+      </div>
     </div>
   );
 }

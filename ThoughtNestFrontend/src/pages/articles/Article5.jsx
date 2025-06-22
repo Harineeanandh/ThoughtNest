@@ -1,11 +1,18 @@
+// Author: Harinee Anandh
 import { Link } from 'react-router-dom';
 import "../../styles/article.css";
+import React, { useEffect } from 'react';
 
 export default function Article5() {
+  useEffect(() => {
+  document.body.classList.add("portrait-only");
+  return () => document.body.classList.remove("portrait-only");
+}, []);
+
   return (
     <div className="article-container">
       <Link to="/" className="logo">ThoughtNest</Link>
-      <img src="/assets/universe.png" className="top-image" alt="Universe" />
+      <img src="/assets/universe.png" className="top-image" alt="Universe"loading="lazy" />
 
       <h1 className="article-title">Is the Universe Deterministic — Or Am I Just a Debugger in Human Form?</h1>
 

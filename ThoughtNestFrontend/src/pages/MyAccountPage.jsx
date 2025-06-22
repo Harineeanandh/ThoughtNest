@@ -1,3 +1,4 @@
+// Author: Harinee Anandh
 import React, { useEffect, useState } from "react";
 import apiInstance from "../scripts/apiInstance";
 import "../styles/account.css";
@@ -222,9 +223,6 @@ export default function MyAccountPage() {
           <p><LuCalendarCheck2 /> <strong>{userData.publishedCount}</strong> Articles Published</p>
         </div>
       </div>
-
-      {/* Mount toast notification system */}
-      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar theme="colored" />
     </>
   );
 }

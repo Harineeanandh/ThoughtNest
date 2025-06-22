@@ -1,13 +1,20 @@
+// Author: Harinee Anandh
 import { Link } from 'react-router-dom';
 import "../../styles/article.css";
+import React, { useEffect } from 'react';
 
 
 export default function Article3() {
+  useEffect(() => {
+  document.body.classList.add("portrait-only");
+  return () => document.body.classList.remove("portrait-only");
+}, []);
+
   return (
     <div className="article-container">
       <Link to="/" className="logo">ThoughtNest</Link>
 
-      <img src="/assets/girl wondering.png" className="top-image" alt="Girl wondering" />
+      <img src="/assets/girl wondering.png" className="top-image" alt="Girl wondering" loading="lazy"/>
 
       <h1 className="article-title">What OS Does a TV Have?</h1>
       <p className="date">May 30, 2025</p>

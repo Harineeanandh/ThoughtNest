@@ -1,21 +1,16 @@
+// Author: Harinee Anandh
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/dashboard.css";
 import apiInstance from "../scripts/apiInstance";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useLocation } from "react-router-dom";
+
 
 const safeToast = (message, type = "info") => {
-  console.log(`Attempting to show toast: "${message}" of type: "${type}"`);
-  setTimeout(() => {
-    const container = document.querySelector(".Toastify__toast-container");
-    if (container) {
-      console.log("ToastContainer is mounted. Showing toast.");
-      toast[type](message);
-    } else {
-      console.warn("ToastContainer not mounted yet. Skipping toast:", message);
-    }
-  }, 20);
+  console.log(`Showing toast: "${message}" of type: "${type}"`);
+  toast[type](message);
 };
 
 
@@ -25,7 +20,9 @@ export default function DashboardPage() {
   const [publicArticles, setPublicArticles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [articleToDelete, setArticleToDelete] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [deletingArticleId, setDeletingArticleId] = useState(null);
+  const [publishingState, setPublishingState] = useState({}); 
+  const [creating, setCreating] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [articlePage, setArticlePage] = useState(1);
@@ -48,16 +45,19 @@ export default function DashboardPage() {
 
   const loggedInUser = getUsernameFromToken(authToken);
 
-  useEffect(() => {
-    if (!authToken || !loggedInUser) {
-      localStorage.removeItem("token");
-      navigate("/login");
-      return;
-    }
+  const location = useLocation(); // this detects when URL changes
 
-    fetchArticles();
-    fetchPublicArticles();
-  }, []); 
+useEffect(() => {
+  if (!authToken || !loggedInUser) {
+    localStorage.removeItem("token");
+    navigate("/login");
+    return;
+  }
+
+  fetchArticles();
+  fetchPublicArticles();
+}, [location.pathname]); // triggers re-fetch when you return from editor
+
 
   function formatDate(dateString) {
     if (!dateString) return "";
@@ -189,13 +189,28 @@ export default function DashboardPage() {
   };
 
  const handleSearchButtonClick = () => {
-  const matchedRoute = staticArticleRoutes[searchTerm.toLowerCase().trim()];
-  if (matchedRoute) {
-    navigate(matchedRoute);
-  } else {
-    safeToast("No exact match found. Please try a different search.", "error");
+  const trimmedSearch = searchTerm.toLowerCase().trim();
+
+  // 1. Check static article routes
+  const staticRoute = staticArticleRoutes[trimmedSearch];
+  if (staticRoute) {
+    navigate(staticRoute);
+    return;
   }
+
+  // 2. Check user-created articles
+  const match = articles.find(
+    (a) => a.title.toLowerCase().trim() === trimmedSearch
+  );
+  if (match) {
+    navigate(`/article/${match.id}`);
+    return;
+  }
+
+  // 3. Fallback
+  safeToast("No exact match found. Please try a different search.", "error");
 };
+
 
   const handleKeyDown = (e) => {
     if (!showSuggestions || filteredArticles.length === 0) return;
@@ -225,7 +240,7 @@ export default function DashboardPage() {
 
   async function handleDelete(articleId) {
     try {
-      setIsLoading(true);
+      setDeletingArticleId(articleId);
       await apiInstance.delete(`/articles/${articleId}`);
       setArticles((prev) => prev.filter((a) => a.id !== articleId));
 setArticleToDelete(null);
@@ -236,26 +251,36 @@ safeToast("Article deleted successfully.", "success");
       console.error("Error deleting article:", err);
       safeToast("Failed to delete article.", "error");
     } finally {
-      setIsLoading(false);
+      setDeletingArticleId(null);
+
     }
   }
 
   const togglePublish = async (articleId, currentStatus) => {
-    try {
-      setIsLoading(true);
-      await apiInstance.patch(
-        `/articles/${articleId}/publish?published=${!currentStatus}`
-      );
-      await fetchArticles();
-      await fetchPublicArticles();
-      safeToast(currentStatus ? "Article unpublished." : "Article published.", "info");
-    } catch (error) {
-      console.error("Failed to toggle publish status:", error);
-      safeToast("Failed to change publish status.", "error");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  try {
+    setPublishingState(prev => ({
+      ...prev,
+      [articleId]: currentStatus ? "unpublishing" : "publishing",
+    }));
+
+    await apiInstance.patch(
+      `/articles/${articleId}/publish?published=${!currentStatus}`
+    );
+    await fetchArticles();
+    await fetchPublicArticles();
+    safeToast(currentStatus ? "Article unpublished." : "Article published.", "info");
+  } catch (error) {
+    console.error("Failed to toggle publish status:", error);
+    safeToast("Failed to change publish status.", "error");
+  } finally {
+    setPublishingState(prev => {
+      const updated = { ...prev };
+      delete updated[articleId];
+      return updated;
+    });
+  }
+};
+
 
   const paginatedArticles = articles.slice(
     (articlePage - 1) * ARTICLES_PER_PAGE,
@@ -292,18 +317,20 @@ safeToast("Article deleted successfully.", "success");
 
         <div className="top-actions">
           <button
-            className="new-article"
-            onClick={() => navigate("/editor?mode=create")}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              "Creating..."
-            ) : (
-              <>
-                <span className="plus-icon">+</span> Create New Article
-              </>
-            )}
-          </button>
+  className="new-article"
+  onClick={() => {
+    setCreating(true);
+    navigate("/editor?mode=create");
+  }}
+  disabled={creating}
+>
+  {creating ? "Creating..." : (
+    <>
+      <span className="plus-icon">+</span> Create New Article
+    </>
+  )}
+</button>
+
 
           <div className="search-bar-container">
             <div className="search-input-wrapper">
@@ -354,6 +381,7 @@ safeToast("Article deleted successfully.", "success");
                 src="/assets/empty-state.png"
                 alt="No articles yet"
                 className="empty-img-inline"
+                loading="lazy"
               />
               <span className="empty-msg-inline">
                 No articles yet! Start by writing one 📝
@@ -398,7 +426,6 @@ safeToast("Article deleted successfully.", "success");
                               e.stopPropagation();
                               handleEdit(article.id);
                             }}
-                            disabled={isLoading}
                           >
                             Edit
                           </button>
@@ -408,25 +435,22 @@ safeToast("Article deleted successfully.", "success");
                               e.stopPropagation();
                               setArticleToDelete(article.id);
                             }}
-                            disabled={isLoading}
                           >
                             Delete
                           </button>
                           <button
-                            className="publish-btn"
-                            onClick={() =>
-                              togglePublish(article.id, article.published)
-                            }
-                            disabled={isLoading}
-                          >
-                            {isLoading
-                              ? article.published
-                                ? "Unpublishing..."
-                                : "Publishing..."
-                              : article.published
-                              ? "Unpublish"
-                              : "Publish"}
-                          </button>
+  className="publish-btn"
+  onClick={() => togglePublish(article.id, article.published)}
+>
+  {publishingState[article.id]
+  ? publishingState[article.id] === "publishing"
+    ? "Publishing..."
+    : "Unpublishing..."
+  : article.published
+  ? "Unpublish"
+  : "Publish"}
+</button>
+
                           </div>
                         </td>
                       </tr>
@@ -523,16 +547,16 @@ safeToast("Article deleted successfully.", "success");
               <p>Are you sure you want to delete this article?</p>
               <div className="modal-actions">
                 <button
-                  className="confirm-delete"
-                  onClick={() => handleDelete(articleToDelete)}
-                  disabled={isLoading}
-                >
-                  {isLoading ? "Deleting..." : "Yes"}
-                </button>
+  className="confirm-delete"
+  onClick={() => handleDelete(articleToDelete)}
+  disabled={deletingArticleId !== null}
+>
+  {deletingArticleId ? "Deleting..." : "Yes"}
+</button>
+
                 <button
                   className="cancel-delete"
                   onClick={() => setArticleToDelete(null)}
-                  disabled={isLoading}
                 >
                   No
                 </button>

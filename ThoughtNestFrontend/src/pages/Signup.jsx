@@ -1,3 +1,4 @@
+// Author: Harinee Anandh
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "../styles/signup.css";
@@ -95,7 +96,7 @@ export default function Signup() {
       <main className="signup-wrapper">
         {/* Left section with illustration */}
         <div className="signup-left">
-          <img src="/assets/blogging.svg" alt="Signup illustration" />
+          <img src="/assets/blogging.svg" alt="Signup illustration" loading="lazy"/>
         </div>
 
         {/* Right section with form */}

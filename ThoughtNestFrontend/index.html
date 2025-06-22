@@ -1,24 +1,39 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Character encoding for the document -->
     <meta charset="UTF-8" />
-
-    <!-- Favicon for the browser tab (optional SVG icon) -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5, user-scalable=yes" />
+    <style>
+      body {
+        overscroll-behavior: none;
+      }
 
-    <!-- Responsive viewport configuration for mobile devices -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
-
-    <!-- Title shown in the browser tab -->
-    <title>Vite + React</title>
+      /* hiding for landscape/portrait warnings on desktop */
+      @media screen and (min-width: 769px) {
+        .landscape-warning,
+        .portrait-warning {
+          display: none !important;
+        }
+      }
+    </style>
+    <title>ThoughtNest</title>
   </head>
 
   <body>
-    <!-- Root div where the entire React app will be mounted -->
-    <div id="root"></div>
+    <!-- Orientation Warnings -->
+    <div class="landscape-warning">
+      🔁 Please rotate your device to landscape mode for the best experience.
+    </div>
 
-    <!-- Vite-specific script entry point (starts the React app) -->
+    <div class="portrait-warning">
+      🔁 Please rotate your device to portrait mode to view this content.
+    </div>
+
+    <!-- Root React Mount Point -->
+    <div id="app-root"></div>
+
+    <!-- React App Entry Point -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
