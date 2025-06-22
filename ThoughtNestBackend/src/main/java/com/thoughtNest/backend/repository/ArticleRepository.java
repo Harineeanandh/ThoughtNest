@@ -1,10 +1,12 @@
 package com.thoughtNest.backend.repository;
 
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 import com.thoughtNest.backend.model.Article;
 import com.thoughtNest.backend.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 /**
  * Repository interface for performing CRUD operations on {@link Article} entities.
@@ -18,6 +20,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
      * @param author the {@link User} whose articles are to be fetched
      * @return list of articles written by the given user
      */
+    @Query("SELECT a FROM Article a JOIN FETCH a.author WHERE a.author = :user")
     List<Article> findByAuthor(User author);
 
     /**
@@ -25,6 +28,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
      *
      * @return list of articles with published status set to true
      */
+    @Query("SELECT a FROM Article a JOIN FETCH a.author WHERE a.published = true")
     List<Article> findByPublishedTrue();
 
 }
