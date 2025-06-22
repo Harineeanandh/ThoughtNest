@@ -1,14 +1,9 @@
 package com.thoughtNest.backend.controller;
 
-import com.thoughtNest.backend.dto.AuthResponse;
-import com.thoughtNest.backend.dto.LoginRequest;
-import com.thoughtNest.backend.dto.UpdateAccountRequest;
-import com.thoughtNest.backend.dto.UserAccountInfoDto;
-import com.thoughtNest.backend.model.User;
-import com.thoughtNest.backend.util.ResponseHandler;
-import com.thoughtNest.backend.security.JwtUtil;
-import com.thoughtNest.backend.service.EmailService;
-import com.thoughtNest.backend.service.UserService;
+import java.security.Principal;
+import java.util.Map;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +12,22 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.util.Map;
-import java.util.Optional;
+import com.thoughtNest.backend.dto.AuthResponse;
+import com.thoughtNest.backend.dto.LoginRequest;
+import com.thoughtNest.backend.dto.UpdateAccountRequest;
+import com.thoughtNest.backend.dto.UserAccountInfoDto;
+import com.thoughtNest.backend.model.User;
+import com.thoughtNest.backend.security.JwtUtil;
+import com.thoughtNest.backend.service.EmailService;
+import com.thoughtNest.backend.service.UserService;
+import com.thoughtNest.backend.util.ResponseHandler;
 
 /**
  * AuthController handles all authentication- and account-related operations,
@@ -120,23 +126,49 @@ public class AuthController {
      * Requires authentication; uses Principal to identify the current user.
      */
     @PatchMapping("/account")
-    public ResponseEntity<?> updateAccount(@RequestBody UpdateAccountRequest request, Principal principal) {
-        String currentEmail = principal.getName();
-        try {
-            User updatedUser = userService.updateUsernameOrEmailOrBoth(currentEmail, request.getUsername(), request.getEmail());
+public ResponseEntity<?> updateAccount(@RequestBody UpdateAccountRequest request, Principal principal) {
+    String currentEmail = principal.getName();
+    try {
+        // Step 1: Perform the update
+        userService.updateUsernameOrEmailOrBoth(currentEmail, request.getUsername(), request.getEmail());
 
-            boolean emailChanged = request.getEmail() != null && !request.getEmail().equals(currentEmail);
-            String message = "Account updated successfully";
+        // Step 2: Determine which email to use for refetching
+        String updatedEmail = request.getEmail() != null && !request.getEmail().isBlank()
+                ? request.getEmail()
+                : currentEmail;
 
-            if (emailChanged) {
-                message += ". Please log in again to continue.";
-            }
-
-            return ResponseHandler.generateResponse(message, HttpStatus.OK, updatedUser);
-        } catch (RuntimeException e) {
-            return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+        // Step 3: Fetch user + articles again to avoid LazyInitializationException
+        Optional<User> updatedUserOpt = userService.findByEmailWithArticles(updatedEmail);
+        if (updatedUserOpt.isEmpty()) {
+            return ResponseHandler.generateResponse("Updated user not found", HttpStatus.NOT_FOUND, null);
         }
+
+        User updatedUser = updatedUserOpt.get();
+
+        int articleCount = updatedUser.getArticles() != null ? updatedUser.getArticles().size() : 0;
+        int publishedCount = (int) updatedUser.getArticles().stream()
+                .filter(a -> Boolean.TRUE.equals(a.getPublished()))
+                .count();
+
+        UserAccountInfoDto dto = new UserAccountInfoDto(
+                updatedUser.getUsername(),
+                updatedUser.getEmail(),
+                articleCount,
+                publishedCount
+        );
+
+        boolean emailChanged = request.getEmail() != null && !request.getEmail().equals(currentEmail);
+        String message = "Account updated successfully";
+        if (emailChanged) {
+            message += ". Please log in again to continue.";
+        }
+
+        return ResponseHandler.generateResponse(message, HttpStatus.OK, dto);
+    } catch (RuntimeException e) {
+        return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
     }
+}
+
 
     /**
      * Endpoint to fetch the current user's account info.
