@@ -22,6 +22,7 @@ import DashboardPage from "./pages/DashboardPage";
 import EditorPage from "./pages/EditorPage";
 import ArticleViewPage from "./pages/ArticleViewPage";
 import MyAccountPage from "./pages/MyAccountPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 // Component to protect routes requiring login
 import PrivateRoute from "./components/PrivateRoute";
@@ -61,6 +62,7 @@ function App() {
 
           {/* Contact form page */}
           <Route path="/contact" element={<Contact />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
 
           {/* Article editor (create/edit page) */}
           <Route path="/editor" element={<EditorPage />} />
