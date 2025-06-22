@@ -143,22 +143,24 @@ public class AuthController {
      * Includes counts for total articles and published articles.
      */
     @GetMapping("/account")
-    public ResponseEntity<?> getCurrentAccount(Principal principal) {
-        String username = principal.getName();
-        System.out.println("Current Username fetched from UserPrincipal in get account:" + username);
+public ResponseEntity<?> getCurrentAccount(Principal principal) {
+    String username = principal.getName();
+    System.out.println("Current Username fetched from UserPrincipal in get account: " + username);
 
-        Optional<User> userOpt = userService.findByEmail(username);
+    Optional<User> userOpt = userService.findByEmailWithArticles(username);
 
-        if (userOpt.isEmpty()) {
-            return ResponseHandler.generateResponse("User not found", HttpStatus.NOT_FOUND, null);
-        }
-
-        User user = userOpt.get();
-        int articleCount = user.getArticles() != null ? user.getArticles().size() : 0;
-        int publishedCount = (int) user.getArticles().stream().filter(a -> Boolean.TRUE.equals(a.getPublished())).count();
-
-        UserAccountInfoDto dto = new UserAccountInfoDto(user.getUsername(), user.getEmail(), articleCount, publishedCount);
-
-        return ResponseHandler.generateResponse("User fetched successfully", HttpStatus.OK, dto);
+    if (userOpt.isEmpty()) {
+        return ResponseHandler.generateResponse("User not found", HttpStatus.NOT_FOUND, null);
     }
+
+    User user = userOpt.get();
+    int articleCount = user.getArticles() != null ? user.getArticles().size() : 0;
+    int publishedCount = (int) user.getArticles().stream()
+        .filter(a -> Boolean.TRUE.equals(a.getPublished()))
+        .count();
+
+    UserAccountInfoDto dto = new UserAccountInfoDto(user.getUsername(), user.getEmail(), articleCount, publishedCount);
+    return ResponseHandler.generateResponse("User fetched successfully", HttpStatus.OK, dto);
+}
+
 }

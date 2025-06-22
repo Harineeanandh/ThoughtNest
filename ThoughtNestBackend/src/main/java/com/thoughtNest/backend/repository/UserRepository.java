@@ -1,11 +1,12 @@
 package com.thoughtNest.backend.repository;
 
-import com.thoughtNest.backend.model.User;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Optional;
+import com.thoughtNest.backend.model.User;
 
 /**
  * Repository interface for {@link User} entities.
@@ -51,4 +52,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return true if a user with the given email exists, false otherwise
      */
     boolean existsByEmail(String email);
+
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.articles WHERE u.email = :email")
+    Optional<User> findByEmailWithArticles(@Param("email") String email);
+
 }

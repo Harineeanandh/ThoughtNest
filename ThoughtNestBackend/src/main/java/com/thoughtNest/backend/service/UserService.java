@@ -1,17 +1,18 @@
 package com.thoughtNest.backend.service;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.thoughtNest.backend.model.PasswordResetToken;
 import com.thoughtNest.backend.model.User;
 import com.thoughtNest.backend.repository.PasswordResetTokenRepository;
 import com.thoughtNest.backend.repository.UserRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Service class for handling all user-related operations:
@@ -155,4 +156,10 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    @Transactional(readOnly = true)
+    public Optional<User> findByEmailWithArticles(String email) {
+    return userRepository.findByEmailWithArticles(email);
+}
+
 }
