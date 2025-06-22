@@ -36,7 +36,6 @@ ThoughtNestFrontend/.env.local
 ThoughtNestBackend/src/main/resources/application.properties
 ThoughtNestBackend/src/main/resources/thoughtnest-backend-*.json
 **/*.env
-**/*.json
 
 # Allow test config for CI
 !ThoughtNestBackend/src/test/resources/application-test.properties

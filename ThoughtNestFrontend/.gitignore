@@ -29,6 +29,5 @@ dist-ssr/
 *.sw?
 
 # Sensitive GCP credentials or backend artifacts
-*.json
 target/
 **/thoughtnest-backend-*.json
