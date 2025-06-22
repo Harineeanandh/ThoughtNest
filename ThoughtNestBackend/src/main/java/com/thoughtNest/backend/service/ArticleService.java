@@ -65,10 +65,11 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public Optional<Article> getArticleById(Long id) {
-        System.out.println("🔍 Fetching article by ID: " + id);
-        Optional<Article> article = articleRepository.findById(id);
+        System.out.println("🔍 Fetching article by ID with author: " + id);
+        Optional<Article> article = articleRepository.findByIdWithAuthor(id);
         if (article.isPresent()) {
-            System.out.println("✅ Article found: " + article.get().getTitle());
+            System.out.println("✅ Article found: " + article.get().getTitle() +
+                    " | Author: " + article.get().getAuthor().getUsername());
         } else {
             System.err.println("⚠️ Article not found for ID: " + id);
         }
@@ -104,7 +105,7 @@ public class ArticleService {
     public Optional<ArticleDTO> getArticleDTOById(Long id) {
         try {
             System.out.println("📄 Attempting to fetch article DTO for ID: " + id);
-            Optional<Article> articleOpt = articleRepository.findById(id);
+            Optional<Article> articleOpt = articleRepository.findByIdWithAuthor(id);
 
             if (articleOpt.isEmpty()) {
                 System.err.println("⚠️ Article with ID " + id + " not found in database.");
