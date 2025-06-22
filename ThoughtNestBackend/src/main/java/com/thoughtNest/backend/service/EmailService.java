@@ -1,12 +1,12 @@
 package com.thoughtNest.backend.service;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 /**
  * Service class responsible for sending emails (e.g., password reset emails).
@@ -38,7 +38,7 @@ public class EmailService {
         String subject = "Password Reset Request - ThoughtNest";
 
         // Link that user will click to reset password
-        String resetLink = "http://localhost:3000/reset-password?token=" + token;
+        String resetLink = "https://thoughnest-frontend.vercel.app/reset-password?token=" + token;
 
         // HTML content of the email
         String body = "<p>Hello,</p>" +
