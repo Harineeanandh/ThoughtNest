@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -21,18 +20,27 @@ public class GCSUploadService {
 
     public String uploadFile(String originalFilename, InputStream inputStream, String contentType) throws IOException {
         String fileName = UUID.randomUUID() + "-" + originalFilename;
+        System.out.println("Starting GCS upload: " + fileName);
 
-        // Use default credentials (from env or GCP runtime)
-        Storage storage = StorageOptions.getDefaultInstance().getService();
+        try {
+            Storage storage = StorageOptions.getDefaultInstance().getService();
+            System.out.println("GCS Storage object initialized");
 
-        BlobId blobId = BlobId.of(bucketName, fileName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
-            .setContentType(contentType)
-            .setAcl(java.util.List.of(Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER))) // Make file public
-            .build();
+            BlobId blobId = BlobId.of(bucketName, fileName);
+            BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+                .setContentType(contentType)
+                .build();
 
-        storage.create(blobInfo, inputStream);
+            storage.create(blobInfo, inputStream);
+            System.out.println("File uploaded to bucket: " + bucketName);
 
-        return String.format("https://storage.googleapis.com/%s/%s", bucketName, fileName);
+            String publicUrl = String.format("https://storage.googleapis.com/%s/%s", bucketName, fileName);
+            System.out.println("Public URL: " + publicUrl);
+            return publicUrl;
+        } catch (Exception e) {
+            System.err.println("GCS Upload failed:");
+            e.printStackTrace();
+            throw new IOException("GCS Upload failed: " + e.getMessage(), e);
+        }
     }
 }
