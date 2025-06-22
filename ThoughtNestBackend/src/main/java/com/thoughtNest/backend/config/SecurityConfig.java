@@ -123,8 +123,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:5173",
     "http://localhost:5174",
-    "http://192.168.1.2:5173",
-    "http://192.168.1.2:5174")); // Frontend origin
+    "http://192.168.1.13:5173",
+    "http://192.168.1.13:5174")); // Frontend origin
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "Origin", "X-Requested-With"));
         config.setAllowCredentials(true);
