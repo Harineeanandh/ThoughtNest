@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/resetpassword.css";
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from "react-toastify";
-import api from "../scripts/apiInstance"; // Using shared axios instance
+import api from "../scripts/apiInstance";
 
 export default function ResetPasswordPage() {
   const location = useLocation();
@@ -14,7 +14,6 @@ export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Extract token from query string
   const token = new URLSearchParams(location.search).get("token");
 
   const handleSubmit = async (e) => {
@@ -31,11 +30,9 @@ export default function ResetPasswordPage() {
       setTimeout(() => navigate("/login"), 1500);
     } catch (error) {
       let message = "Password reset failed. Please try again.";
-
       if (error.response?.data?.message) {
         message = error.response.data.message;
       }
-
       toast.error(message);
     } finally {
       setIsLoading(false);
@@ -43,7 +40,7 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <>
+    <div className="reset-wrapper"> 
       <header className="navbar center-logo-only">
         <h1 className="logo">ThoughtNest</h1>
       </header>
@@ -74,6 +71,6 @@ export default function ResetPasswordPage() {
           </button>
         </form>
       </main>
-    </>
+    </div>
   );
 }
