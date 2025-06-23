@@ -298,6 +298,16 @@ input[type="file"] {
     object-fit: contain;
   }
 
+  .reset-wrapper {
+  transform: scale(0.8) translateY(-10px);
+  transform-origin: top center;
+}
+
+.reset-wrapper .logo {
+  font-size: 1.4rem !important;
+}
+
+
   ::-webkit-scrollbar {
     display: none;
   }
