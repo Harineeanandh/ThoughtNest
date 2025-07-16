@@ -59,6 +59,7 @@ public class UserService {
     /**
      * Find a user by their username.
      */
+    @Transactional
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -82,7 +83,6 @@ public class UserService {
 
         // Create a new token
         String token = UUID.randomUUID().toString();
-        System.out.println("Reset token for testing: " + token);
         PasswordResetToken resetToken = new PasswordResetToken();
         resetToken.setToken(token);
         resetToken.setUser(user);
